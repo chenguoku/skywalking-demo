@@ -9,3 +9,10 @@ spring:
         server-addr: 127.0.0.1:8848
   application:
     name: b-server
+  # 对应 RedisProperties 类
+  redis:
+    host: 192.168.30.131
+    port: 6379
+    password: # Redis 服务器密码，默认为空。生产中，一定要设置 Redis 密码！
+    database: 0 # Redis 数据库号，默认为 0 。
+    timeout: 10000 # Redis 连接超时时间，单位：毫秒。
