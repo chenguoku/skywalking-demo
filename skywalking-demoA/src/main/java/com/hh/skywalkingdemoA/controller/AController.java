@@ -2,6 +2,7 @@ package com.hh.skywalkingdemoA.controller;
 
 import com.hh.skywalkingdemoA.service.AService;
 import lombok.extern.slf4j.Slf4j;
+import org.slf4j.MDC;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -41,9 +42,23 @@ public class AController {
         }
         log.info("#####Sever A header end###");
 
+        printTraceId();
+
         String returnMsg = aService.aService();
         log.info("######A Controller have a back message:" + returnMsg);
         return returnMsg;
+    }
+
+    private void printTraceId() {
+        Thread thread = Thread.currentThread();
+        StackTraceElement[] stackTrace = thread.getStackTrace();
+        Map<String, String> copyOfContextMap = MDC.getCopyOfContextMap();
+        String traceId = MDC.get("traceId");
+        String tid = MDC.get("tid");
+
+        log.info("traceId:" + traceId);
+        log.info("tid:" + tid);
+
     }
 
 }

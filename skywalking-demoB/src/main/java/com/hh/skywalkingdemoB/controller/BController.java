@@ -2,6 +2,8 @@ package com.hh.skywalkingdemoB.controller;
 
 import com.hh.skywalkingdemoB.service.BService;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.skywalking.apm.toolkit.trace.Trace;
+import org.slf4j.MDC;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -28,6 +30,8 @@ public class BController {
 
     @GetMapping("b")
     public String bController(HttpServletRequest request, HttpServletResponse response) {
+
+
         log.info("######B Controller come on!");
 
 
@@ -42,10 +46,24 @@ public class BController {
         }
         log.info("#####Sever B header end###");
 
+        printTraceId();
 
         String returnMsg = bService.bService();
         log.info("######B Controller have return message:" + returnMsg);
         return returnMsg;
+    }
+
+
+    private void printTraceId() {
+        Thread thread = Thread.currentThread();
+        StackTraceElement[] stackTrace = thread.getStackTrace();
+        Map<String, String> copyOfContextMap = MDC.getCopyOfContextMap();
+        String traceId = MDC.get("traceId");
+        String tid = MDC.get("tid");
+
+        log.info("traceId:" + traceId);
+        log.info("tid:" + tid);
+
     }
 
 }
